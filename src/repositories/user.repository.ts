@@ -4,6 +4,27 @@ import User from "../models/user.model";
 
 class UserRepository {
 
+    async findUsernameAndPassword(username: string, password: string): Promise<User | undefined> {
+        try {
+            const query = `
+            SELECT uuid, username
+            FROM application_user
+            WHERE username = $1
+            AND password = crypt($2, 'my_salt')
+        `;
+            const values = [username, password];
+            const { rows } = await db.query<User>(query, values);
+            const [ user ] = rows;
+            return user || null;
+
+        } catch (err) {
+            throw new DatabaseError(`Erro na consulta de usuários`, err);
+        } finally {
+            db.end;
+        }
+
+    }
+
     async findAllUsers(): Promise<Array<User>> {
         try {
             const query = `
