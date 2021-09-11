@@ -1,4 +1,5 @@
 import express from 'express';
+import basicAuthenticationMiddleware from './middlewares/basic.authentication.middleware';
 import errorHandler from './middlewares/error-handler.middleware';
 import authorizationRoute from './routes/authorization.route';
 import statusRoute from './routes/status.route';
